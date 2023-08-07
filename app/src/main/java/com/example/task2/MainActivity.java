@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.data.Question;
@@ -15,13 +16,14 @@ import java.util.List;
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
 
+    TextView tvQuestionTitle;
     ImageView img;
     Button btnA;
     Button btnB;
     Button btnC;
     List<Question> question;
     int currentPosition = 0;
-    int currentAnswerCount = 1;
+    int currentAnswerCount = 0;
     int currentAnswer = 0;
 
     @Override
@@ -44,8 +46,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             btnA.setText(question.get(currentPosition).getA());
             btnB.setText(question.get(currentPosition).getB());
             btnC.setText(question.get(currentPosition).getC());
+            tvQuestionTitle.setText("Question: "+currentPosition);
         } else {
-            Toast.makeText(this,"Sorawlar tawsildi",Toast.LENGTH_LONG).show();
+            Toast.makeText(this,"Sorawlar tawsildi",Toast.LENGTH_SHORT).show();
             Intent intent = new Intent(this,SecondActivity.class);
             intent.putExtra("key",currentAnswerCount);
             startActivity(intent);
@@ -65,12 +68,15 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         question.add(new Question(
                 R.drawable.basketball_ball, "basketball ball", "football ball","cricket ball",1));
         currentAnswer = question.get(0).getTrueAnswer();
+        Toast.makeText(this,"currentPosition: "+currentPosition+"\ncurrentAnswer: "+currentAnswer,Toast.LENGTH_LONG).show();
         question.add(new Question(
                 R.drawable.bycicle, "scooter", "motorbike","bycicle",3));
         currentAnswer = question.get(1).getTrueAnswer();
+        Toast.makeText(this,"currentPosition: "+currentPosition+"\ncurrentAnswer: "+currentAnswer,Toast.LENGTH_LONG).show();
         question.add(new Question(
                 R.drawable.pencil, "pen", "book","pencil",3));
         currentAnswer = question.get(2).getTrueAnswer();
+        Toast.makeText(this,"currentPosition: "+currentPosition+"\ncurrentAnswer: "+currentAnswer,Toast.LENGTH_LONG).show();
 
         btnA.setBackgroundColor(R.drawable.btn_style1);
         btnB.setBackgroundColor(R.drawable.btn_style1);
@@ -83,24 +89,22 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         if(id == R.id.btn_a){
             btnA.setBackgroundColor(R.drawable.btn_style);
-            if (currentAnswer == question.get(currentPosition).getTrueAnswer()) currentAnswerCount++;
-            currentPosition++;
-            Toast.makeText(this,"currentPosition: "+currentPosition,Toast.LENGTH_LONG).show();
-            displayQuestions();
+            actionWhenClickButton();
         }
         if(id == R.id.btn_b){
             btnB.setBackgroundColor(R.drawable.btn_style);
-            if (currentAnswer == question.get(currentPosition).getTrueAnswer()) currentAnswerCount++;
-            currentPosition++;
-            Toast.makeText(this,"currentPosition: "+currentPosition,Toast.LENGTH_LONG).show();
-            displayQuestions();
+            actionWhenClickButton();
         }
         if(id == R.id.btn_c){
             btnC.setBackgroundColor(R.drawable.btn_style);
-            if (currentAnswer == question.get(currentPosition).getTrueAnswer()) currentAnswerCount++;
-            currentPosition++;
-            Toast.makeText(this,"currentPosition: "+currentPosition,Toast.LENGTH_LONG).show();
-            displayQuestions();
+            actionWhenClickButton();
         }
+    }
+
+    public void actionWhenClickButton(){
+        if (currentAnswer == question.get(currentPosition).getTrueAnswer()) currentAnswerCount++;
+        currentPosition++;
+        Toast.makeText(this,"currentPosition: "+currentPosition,Toast.LENGTH_LONG).show();
+        displayQuestions();
     }
 }
